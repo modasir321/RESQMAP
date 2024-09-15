@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image Slider</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        #background-container {
+            width: 60vw;
+            height: 40vh;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s, transform 0.3s;
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #background-container:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="background-container">
+        <!-- This container will hold the background image -->
+    </div>
+
+    <script>
+        (function() {
+            const backgroundContainer = document.getElementById('background-container');
+
+            const images = ['https://i.pinimg.com/564x/d8/2b/64/d82b64eaac9ae664387fe7bf762b6366.jpg', 'https://i.pinimg.com/236x/34/fa/07/34fa07adc66f3a4a0f4665c7ff2d4815.jpg'];
+            let currentIndex = 0;
+
+            backgroundContainer.addEventListener('mouseover', function() {
+                backgroundContainer.style.backgroundImage = `url(${images[currentIndex]})`;
+                currentIndex = (currentIndex + 1) % images.length;
+            });
+        })();
+    </script>
+</body>
+</html>

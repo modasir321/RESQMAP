@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+    <style>
+        .container{
+    max-width:1170px;
+    background-color: #fff;
+    margin: auto;
+
+}
+.row{
+    display: flex;
+    flex-wrap: wrap;
+}
+ul{
+    list-style:none;
+}
+.footer{
+    background-color: gainsboro;
+    padding: 70px 0;
+}
+.footer col{
+    width: 25%;
+    padding: 0 15px;
+}
+.footer-col h4{
+    font-size: 18px;
+    color:#ffff;
+    text-transform: capitalize;
+    margin-bottom: 30px;
+    font-weight:500;
+    position: relative;
+}
+.footer-col h4::before{
+    content: '';
+    position: absolute;
+    left: 0%;
+    bottom: -10px;
+    background-color: #e91e63;
+    height: 2px;
+}
+.footer-col ul li :not(:last-child){
+    margin-bottom: 10px;
+}
+.footer-col ul li a{
+    font-size: 16px;
+    text-transform: capitalize;
+    color: #e91e63;
+    text-decoration: none;
+    font-weight: 300;
+    color: #bbbb;
+    display: block;
+    transition: all 0.3 ease;
+
+}
+.footer-col  ul li a:hover{
+
+    color: #ffff;
+    padding-left: 8px;
+}
+.footer-col .social-links a{
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-color: aquamarine;
+    margin: 0px 10px 10px 0px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    color:#ffff;
+    transition: all 0.5s ease ;
+
+}
+.footer-col .social-links a:hover{
+    color: #24262b;
+    background-color: #ffffff;
+}
+
+@media(max-width:767px){
+    .footer-col{
+        width:50%;
+        margin-bottom: 30px;
+}
+}
+@media(max-width:574px){
+     .footer-col{
+        width:100%;
+
+     }
+}
+    
+
+
+    </style>
+</head>
+<body>
+    
+</body>
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+          <div class="footer-col">
+            <h4> company </h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#"> Our Services</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Affiliate Program</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+          <h4> get help </h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">returns</a></li>
+            <li><a href="#">order status</a></li>
+          </ul>
+      </div>
+      <div class="footer-col">
+        <h4> onine shop </h4>
+        <ul>
+          <li><a href="#">Watch</a></li>
+          <li><a href="#">Bag</a></li>
+          <li><a href="#">Shoes</a></li>
+          <li><a href="#">Dress</a></li>
+        </ul>
+    </div>
+      <div class="footer-col">
+          <h4> follow us </h4>
+          <div class="social-links">
+          <ul>
+            <li><a href="#"><i class="fab fa-home"></i></a></li>
+            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fab fa-user"></i></a></li>
+          </ul>
+      </div>
+        </div>
+    </div>
+  </footer>
+</html>

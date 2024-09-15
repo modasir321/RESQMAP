@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AREA FIELD</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: sans-serif;
+            background-color: white;
+        }
+
+        .Logo {
+            margin: 10px;
+        }
+
+        #Heading1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            margin-left: 32%;
+            margin-top: 28px;
+            color: rgb(45, 109, 47);
+            font-weight: 650;
+            justify-content: space-between;
+            padding-left: 7%;
+        }
+
+        #Heading1:hover {
+            color: rgb(61, 111, 160);
+        }
+
+        .icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 15px;
+        }
+
+        .icon p {
+            margin: 0;
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 22px;
+            padding-right: 25px;
+            padding-left: 25px;
+            color: rgb(45, 109, 47);
+            margin-right: 7px;
+        }
+
+        .icon p:hover {
+            color: rgb(246, 248, 250);
+            cursor: pointer;
+            border-bottom: 1px solid #5a81ab;
+        }
+
+        /* Background Container Styles */
+        #background-container {
+            width: 50%;
+            height: 200px;
+            margin-top: 20px;
+            margin-left: auto;
+            background-position: center;
+            background-size: 100% 100%;
+            background-repeat: repeat;
+            border: 6px solid #fff;
+            box-shadow: 0 0 10px rgba(175, 175, 175, 0.5);
+        }
+
+        #background-container:hover {
+            transform: scale(1.1);
+        }
+
+        /* Navigation Styles */
+        ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            list-style-type: none;
+            justify-content: center;
+            background-color: #f5f5f5;
+            height: 30px;
+            align-items: center;
+        }
+
+        ul li a {
+            color: gray;
+            align-items: center;
+            font-size: 17px;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 10px 30px;
+            margin: 0 10px;
+            position: relative;
+            transition: all .5s;
+        }
+
+        a:hover {
+            background-color: rgba(35, 105, 51, 0.599);
+            color: white;
+        }
+
+        /* Add Before and After Styles */
+        a::before,
+        a::after {
+            content: "";
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            border: 3px solid black;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+
+        a::before {
+            bottom: 12px;
+            left: 12px;
+            border-width: 0 0 3px 3px;
+        }
+
+        a::after {
+            top: 12px;
+            right: 12px;
+            border-width: 3px 3px 0 0;
+        }
+
+        a:hover::before {
+            opacity: 1;
+            bottom: -8px;
+            left: -8px;
+        }
+
+        a:hover::after {
+            opacity: 1;
+            top: -8px;
+            right: -8px;
+        }
+
+        #map {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 60vh;
+            width: 80%;
+        }
+
+        .calculation-box {
+            height: 75px;
+            width: 150px;
+            position: absolute;
+            bottom: 40px;
+            left: 10px;
+            background-color: rgba(32, 29, 29, 0.9);
+            padding: 15px;
+            text-align: center;
+        }
+
+        p {
+            font-family: 'Open Sans';
+            margin: 0;
+            font-size: 13px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="Logo">
+        <img src="LOGO.png" alt="Logo" usemap="#imag-logo" style="height: 80px; width: 150px;">
+        <map name="#imag-logo">
+            <area shape="rect" coords="40,20,490,320" href="Logo1.html" alt="logo">
+        </map>
+    </div>
+    <h1 id="Heading1">WELCOME TO RESQMAP</h1>
+
+    <div class="icon">
+        <p id="user"><i class="fas fa-user"></i></p>
+        <p id="house"><i class="fas fa-home"></i></p>
+    </div>
+    <br>
+    <ul class="navbar">
+        <li><a href="HOME.html">HOME</a></li>
+        <li><a href="WASTE MANAGEMENT.html">WASTE MANAGEMENT</a></li>
+        <li><a href="EMERGENCY SERVICE.html">EMERGENCY SERVICE</a></li>
+        <li><a href="SUPPORT.html">SUPPORT</a></li>
+        <li><a href="CONTACTUS.html">CONTACT US</a></li>
+    </ul>
+
+    <div id="map"></div>
+    <div class="calculation-box">
+        <p>Click the map to draw a polygon or upload a file.</p>
+        <input type="file" id="fileInput" onchange="handleFile()">
+        <div id="calculated-area"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/shpjs"></script>
+    <script src="https://unpkg.com/togeojson"></script>
+    <script>
+        const map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        const drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnItems
+            },
+            draw: {
+                polygon: true,
+                marker: false,
+                circle: false,
+                circlemarker: false,
+                rectangle: false
+            }
+        });
+        map.addControl(drawControl);
+
+        map.on('draw:created', function (e) {
+            const layer = e.layer;
+            drawnItems.clearLayers().addLayer(layer);
+
+            const area = turf.area(layer.toGeoJSON());
+            const roundedArea = Math.round(area * 100) / 100;
+
+            // Display area in the 'calculated-area' div
+            document.getElementById('calculated-area').innerHTML = `<p><strong>${roundedArea}</strong> square meters</p>`;
+
+            // Display area directly on the polygon as a popup
+            layer.bindPopup(`<p><strong>${roundedArea}</strong> square meters</p>`).openPopup();
+        });
+
+        function handleFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const content = e.target.result;
+
+                if (file.name.endsWith('.kml')) {
+                    const geojson = toGeoJSON.kml(content);
+                    handleGeoJSON(geojson);
+                } else if (file.name.endsWith('.zip') || file.name.endsWith('.shp')) {
+                    shp(content).then(function (geojson) {
+                        handleGeoJSON(geojson);
+                    });
+                } else {
+                    alert('Unsupported file format. Please upload a KML or Shapefile.');
+                }
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        function handleGeoJSON(geojson) {
+            const layer = L.geoJSON(geojson);
+            map.fitBounds(layer.getBounds());
+            drawnItems.addLayer(layer);
+            const area = turf.area(layer.toGeoJSON());
+            const roundedArea = Math.round(area * 100) / 100;
+            layer.bindPopup(`<p><strong>${roundedArea}</strong> square meters</p>`).openPopup();
+            // Display area in the 'calculated-area' div
+            document.getElementById('calculated-area').innerHTML = `<p><strong>${roundedArea}</strong> square meters</p>`;
+            layer.bindPopup(`<p><strong>${roundedArea}</strong> square meters</p>`).openPopup();
+        };
+
+      reader.readAsArrayBuffer(file);
+        
+        
+    </script>
+
+
+</body>
+</html>

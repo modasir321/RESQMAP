@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crime Data Charts</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="display: flex; justify-content: space-around;">
+    <canvas id="kidnappingChart" width="100" height="200"></canvas>
+    <canvas id="rapeChart" width="100" height="200"></canvas>
+    <canvas id="deathChart" width="100" height="200"></canvas>
+  </div>
+
+  <script>
+    function generateRandomData() {
+      return Array.from({ length: 5 }, () => Math.floor(Math.random() * 10) + 1);
+    }
+
+    var ctxKidnapping = document.getElementById('kidnappingChart').getContext('2d');
+    var ctxRape = document.getElementById('rapeChart').getContext('2d');
+    var ctxDeath = document.getElementById('deathChart').getContext('2d');
+
+    var labels = ['January', 'February', 'March', 'April', 'May'];
+
+    var kidnappingData = {
+      label: 'Kidnapping',
+      data: generateRandomData(),
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 2,
+      fill: false
+    };
+
+    var rapeData = {
+      label: 'Rape',
+      data: generateRandomData(),
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 2,
+      fill: false
+    };
+
+    var deathData = {
+      label: 'Death',
+      data: generateRandomData(),
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 2,
+      fill: false
+    };
+
+    var options = {
+      responsive: true,
+      maintainAspectRatio: false
+    };
+
+    var kidnappingChart = new Chart(ctxKidnapping, {
+      type: 'line',
+      data: { labels: labels, datasets: [kidnappingData] },
+      options: options
+    });
+
+    var rapeChart = new Chart(ctxRape, {
+      type: 'line',
+      data: { labels: labels, datasets: [rapeData] },
+      options: options
+    });
+
+    var deathChart = new Chart(ctxDeath, {
+      type: 'line',
+      data: { labels: labels, datasets: [deathData] },
+      options: options
+    });
+  </script>
+</body>
+</html>
